@@ -1,0 +1,31 @@
+{
+  "name": "confident",
+  "version": "1.0.0",
+  "description": "Use Express with OpenAPI / Swagger",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aaronshaf/confident.git"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "express",
+    "openapi",
+    "swagger"
+  ],
+  "author": "Aaron Shafovaloff <aaronshaf@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aaronshaf/confident/issues"
+  },
+  "homepage": "https://github.com/aaronshaf/confident#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "js-yaml": "^3.6.1"
+  }
+}
