@@ -20,14 +20,6 @@ paths:
           description: Say hello to the world.
 ```
 
-### greet.js
-
-```javascript
-module.exports = function (req, res) {
-  res.json('Hello, world.')
-}
-```
-
 ### index.js
 
 ```javascript
@@ -36,13 +28,17 @@ const express = require('express')
 const app = express()
 const greet = require('./greet')
 
+function greet (req, res) {
+  res.json('Hello, world.')
+}
+
 app.use(confident({
   definition: '/api.yml',
   operations: { greet }
 }))
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+  console.log('Listening on port 3000!')
 })
 ```
 
