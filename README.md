@@ -46,8 +46,7 @@ app.listen(3000, function () {
 })
 ```
 
-## What else does confident do?
+## Roadmap
 
-* Map each endpoint to a route controller
 * Validate requests and responses
 * Publish API documentation (by default at `/docs`)
