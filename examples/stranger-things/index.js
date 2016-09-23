@@ -27,6 +27,12 @@ function getCharacters (req, res) {
   res.json({ data: characters })
 }
 
+function getCharacter (req, res) {
+  res.json({
+    data: characters[parseInt(req.params.characterId)]
+  })
+}
+
 const postCharacter = express.Router()
   .use(
     (req, res) => {
@@ -39,6 +45,7 @@ app.use(confident({
   definition: path.join(__dirname, './api.yml'),
   operations: {
     getCharacters,
+    getCharacter,
     postCharacter,
     searchCharacters
   }

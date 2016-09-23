@@ -12,7 +12,7 @@ paths:
       operationId: getCharacters
       responses:
         200:
-          description: list the characters
+          description: List of characters
     post:
       operationId: postCharacter
       parameters:
@@ -25,6 +25,13 @@ paths:
         201:
           description: Successfully added character
 
+  /characters/{characterId}:
+    get:
+      operationId: getCharacter
+      responses:
+        200:
+          description: Character
+
   /search:
     get:
       operationId: searchCharacters
@@ -34,5 +41,5 @@ paths:
           type: string
           required: true
       responses:
-        "200":
-          description: character search results
+        200:
+          description: Character search results
