@@ -13,3 +13,10 @@ test('invalid POST /characters', () => {
     .post('/characters')
     .expect(400)
 })
+
+test('invalid POST /characters (2)', () => {
+  return request(app)
+    .post('/characters')
+    .send({name: 1})
+    .expect(400)
+})
