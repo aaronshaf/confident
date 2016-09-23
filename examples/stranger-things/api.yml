@@ -17,8 +17,7 @@ paths:
       - name: name
         in: body
         required: true
-        schema:
-          type: string
+        type: string
       responses:
         "201":
           description: Successfully added character

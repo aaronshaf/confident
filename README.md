@@ -44,5 +44,9 @@ app.listen(3000, function () {
 
 ## Roadmap
 
-* Validate requests and responses
+* Validate query params
+* Validate classic formData
+* Validate headers
+* Validate responses
+* Support $ref
 * Publish API documentation (by default at `/docs`)
