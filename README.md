@@ -54,3 +54,10 @@ app.listen(3000, function () {
 * Validate headers
 * Validate responses
 * Support $ref
+
+## See also
+
+* [swaggerize-express](https://github.com/krakenjs/)
+* [swaggerize-routes](https://github.com/krakenjs/swaggerize-routes)
+* [swagger-tools](https://github.com/apigee-127/swagger-tools)
+* [swagger-node-express](https://github.com/swagger-api/swagger-node)
