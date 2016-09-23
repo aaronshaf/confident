@@ -17,7 +17,14 @@ paths:
       - name: name
         in: body
         required: true
-        type: string
+        schema:
+          type: string
       responses:
         "201":
           description: Successfully added character
+  /search:
+    get:
+      operationId: searchCharacters
+      responses:
+        "200":
+          description: character search results

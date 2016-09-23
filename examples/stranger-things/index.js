@@ -16,6 +16,10 @@ let characters = [
   'Donald Melvald'
 ]
 
+function searchCharacters (req, res) {
+  return res.json({ data: [] })
+}
+
 function getCharacters (req, res) {
   res.json({ data: characters })
 }
@@ -32,7 +36,8 @@ app.use(confident({
   definition: path.join(__dirname, './api.yml'),
   operations: {
     getCharacters,
-    postCharacter
+    postCharacter,
+    searchCharacters
   }
 }))
 

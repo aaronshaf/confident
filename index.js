@@ -8,16 +8,26 @@ const Ajv = require('ajv')
 const bodyParser = require('body-parser')
 
 const ajv = new Ajv({ removeAdditional: true })
+const swaggerDefinitionJson = fs.readFileSync(path.join(__dirname, './lib/definitions/swagger-2.json'), 'utf8')
+const swaggerSchema = JSON.parse(swaggerDefinitionJson)
+const validateApiDefinition = new Ajv().compile(swaggerSchema)
 
 module.exports = function (options) {
   const yaml = fs.readFileSync(options.definition, 'utf8')
-  const definition = safeLoad(yaml)
+  const apiDefinition = safeLoad(yaml)
+
+  const apiDefinitionValid = validateApiDefinition(apiDefinition)
+  if (!apiDefinitionValid) {
+    console.error(validateApiDefinition.errors)
+    throw new Error('API definition is not valid')
+  }
+
   router.get('/' + path.basename(options.definition), (req, res) => {
     res.header('Content-Type', 'text/yaml').send(yaml)
   })
-  for (let path in definition.paths) {
-    for (let method in definition.paths[path]) {
-      const methodInfo = definition.paths[path][method]
+  for (let path in apiDefinition.paths) {
+    for (let method in apiDefinition.paths[path]) {
+      const methodInfo = apiDefinition.paths[path][method]
       const fieldsToPick = [
         'type', 'items', 'exclusiveMaximum', 'minimum', 'exclusiveMinimum',
         'maxLength', 'minLength', 'pattern', 'maxItems', 'minItems',
