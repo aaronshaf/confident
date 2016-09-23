@@ -42,18 +42,11 @@ app.listen(3000, function () {
 })
 ```
 
-## http://localhost:3000/docs
+## Generated documentation
+
+`http://localhost:3000/docs`
 
 ![screenshot](https://d3vv6lp55qjaqc.cloudfront.net/items/0V0d341O2k0l2c243C3G/Screen%20Shot%202016-09-23%20at%203.25.07%20PM.png?X-CloudApp-Visitor-Id=ab2071d5f76f8504ab6d3070d8a2c5c3&v=60088c3e)
-
-## Roadmap
-
-* Validate query params
-* Validate path params
-* Validate classic formData
-* Validate headers
-* Validate responses
-* Support $ref
 
 ## See also
 
