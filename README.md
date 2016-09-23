@@ -16,7 +16,7 @@ paths:
     get:
       operationId: greet
       responses:
-        "200":
+        200:
           description: Say hello to the world.
 ```
 
@@ -42,6 +42,10 @@ app.listen(3000, function () {
 })
 ```
 
+## /docs
+
+![screenshot](https://d3vv6lp55qjaqc.cloudfront.net/items/0V0d341O2k0l2c243C3G/Screen%20Shot%202016-09-23%20at%203.25.07%20PM.png?X-CloudApp-Visitor-Id=ab2071d5f76f8504ab6d3070d8a2c5c3&v=60088c3e)
+
 ## Roadmap
 
 * Validate query params
@@ -50,4 +54,3 @@ app.listen(3000, function () {
 * Validate headers
 * Validate responses
 * Support $ref
-* Publish API documentation (by default at `/docs`)

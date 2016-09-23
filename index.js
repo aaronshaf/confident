@@ -1,4 +1,5 @@
-const router = require('express').Router()
+const express = require('express')
+const router = express.Router()
 const safeLoad = require('js-yaml').safeLoad
 const fs = require('fs')
 const path = require('path')
@@ -23,8 +24,17 @@ module.exports = function (options) {
   }
 
   router.get('/' + path.basename(options.definition), (req, res) => {
-    res.header('Content-Type', 'text/yaml').send(yaml)
+    res.header('Content-Type', 'text/yaml')
+    res.send(yaml)
   })
+
+  router.get('/' + path.basename(options.definition, '.yml') + '.json', (req, res) => {
+    res.header('Content-Type', 'application/json')
+    res.send(JSON.stringify(apiDefinition, null, 2))
+  })
+
+  router.use('/docs', express.static(path.join(__dirname, './node_modules/react-openapi/build/')))
+
   for (let path in apiDefinition.paths) {
     for (let method in apiDefinition.paths[path]) {
       const methodInfo = apiDefinition.paths[path][method]
