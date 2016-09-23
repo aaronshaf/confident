@@ -14,17 +14,22 @@ paths:
     post:
       operationId: postCharacter
       parameters:
-      - name: name
-        in: body
-        required: true
-        schema:
-          type: string
+        - name: name
+          in: body
+          required: true
+          schema:
+            type: string
       responses:
         "201":
           description: Successfully added character
   /search:
     get:
       operationId: searchCharacters
+      parameters:
+        - name: q
+          in: query
+          type: string
+          required: true
       responses:
         "200":
           description: character search results

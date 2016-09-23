@@ -45,6 +45,7 @@ app.listen(3000, function () {
 ## Roadmap
 
 * Validate query params
+* Validate path params
 * Validate classic formData
 * Validate headers
 * Validate responses

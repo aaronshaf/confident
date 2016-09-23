@@ -18,7 +18,7 @@ module.exports = function (options) {
 
   const apiDefinitionValid = validateApiDefinition(apiDefinition)
   if (!apiDefinitionValid) {
-    console.error(validateApiDefinition.errors)
+    console.log(validateApiDefinition.errors)
     throw new Error('API definition is not valid')
   }
 
@@ -28,24 +28,20 @@ module.exports = function (options) {
   for (let path in apiDefinition.paths) {
     for (let method in apiDefinition.paths[path]) {
       const methodInfo = apiDefinition.paths[path][method]
-      const fieldsToPick = [
-        'type', 'items', 'exclusiveMaximum', 'minimum', 'exclusiveMinimum',
-        'maxLength', 'minLength', 'pattern', 'maxItems', 'minItems',
-        'uniqueItems', 'enum', 'multipleOf'
-      ]
+      const validators = []
+
+      // validate request body
       const bodyPropertySchemas = (methodInfo.parameters || [])
         .filter(inBody)
         .map((param) => {
           const schema = Object.assign({},
-            (param.schema || {}),
-            pick(param, fieldsToPick)
+            (param.schema || {})
           )
           return [param.name, schema]
         })
-
-      const validators = []
       if (bodyPropertySchemas.length) {
         const required = methodInfo.parameters
+          .filter(inBody)
           .filter((param) => param.required)
           .map((param) => param.name)
         const bodySchema = {
@@ -58,6 +54,40 @@ module.exports = function (options) {
           const valid = validateBody(req.body)
           if (!valid) {
             return res.status(400).json(validateBody.errors)
+          }
+        })
+      }
+
+      const nonBodySchemaFields = [
+        'type', 'items', 'exclusiveMaximum', 'minimum', 'exclusiveMinimum',
+        'maxLength', 'minLength', 'pattern', 'maxItems', 'minItems',
+        'uniqueItems', 'enum', 'multipleOf'
+      ]
+
+      // validate query params
+      const queryParamsSchemas = (methodInfo.parameters || [])
+        .filter(inQuery)
+        .map((param) => {
+          const schema = Object.assign({},
+            pick(param, nonBodySchemaFields)
+          )
+          return [param.name, schema]
+        })
+      if (queryParamsSchemas.length) {
+        const required = methodInfo.parameters
+          .filter(inQuery)
+          .filter((param) => param.required)
+          .map((param) => param.name)
+        const queryParamsSchema = {
+          type: 'object',
+          required,
+          properties: fromPairs(queryParamsSchemas)
+        }
+        const validateQueryParams = ajv.compile(queryParamsSchema)
+        validators.push((req, res) => {
+          const valid = validateQueryParams(req.query)
+          if (!valid) {
+            return res.status(400).json(validateQueryParams.errors)
           }
         })
       }
