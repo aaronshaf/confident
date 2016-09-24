@@ -1,4 +1,5 @@
 const confident = require('../../index') // require('confident')
+const operation = require('../../operation') // require('confident/operation')
 const express = require('express')
 const app = express()
 const path = require('path')
@@ -33,14 +34,14 @@ function getCharacter (req, res) {
   })
 }
 
-const postCharacter = express.Router()
-  .use(
-    (req, res) => {
-      characters.push(req.body.name)
-      res.status(201).end()
-    }
+const postCharacter = operation(
+  (req, res) => {
+    characters.push(req.body.name)
+    res.status(201).end()
+  }
 )
 
+app.set('json spaces', 2)
 app.use(confident({
   definition: path.join(__dirname, './api.yml'),
   operations: {

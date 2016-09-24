@@ -1,5 +1,5 @@
 const request = require('supertest')
-const crazyApp = require('../examples/crazy-api')
+const crazyApp = require('../examples/base-path')
 
 describe('base path', () => {
   test('404 on /api.yml', () => {
