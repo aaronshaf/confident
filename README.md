@@ -50,7 +50,7 @@ app.listen(3000, function () {
 
 ## See also
 
-* [swaggerize-express](https://github.com/krakenjs/)
+* [swaggerize-express](https://github.com/krakenjs/swaggerize-express)
 * [swaggerize-routes](https://github.com/krakenjs/swaggerize-routes)
 * [swagger-tools](https://github.com/apigee-127/swagger-tools)
 * [swagger-node-express](https://github.com/swagger-api/swagger-node)
