@@ -23,17 +23,19 @@ module.exports = function (options) {
     throw new Error('API definition is not valid')
   }
 
-  router.get('/' + path.basename(options.definition), (req, res) => {
+  const basePath = apiDefinition.basePath ? (apiDefinition.basePath) : ''
+
+  const api = express.Router()
+
+  api.get('/' + path.basename(options.definition), (req, res) => {
     res.header('Content-Type', 'text/yaml')
     res.send(yaml)
-  })
-
-  router.get('/' + path.basename(options.definition, '.yml') + '.json', (req, res) => {
+  }),
+  api.get('/' + path.basename(options.definition, '.yml') + '.json', (req, res) => {
     res.header('Content-Type', 'application/json')
     res.send(JSON.stringify(apiDefinition, null, 2))
-  })
-
-  router.use('/docs', express.static(path.join(__dirname, './node_modules/react-openapi/build/')))
+  }),
+  api.use('/docs', express.static(path.join(__dirname, './node_modules/react-openapi/build/')))
 
   for (let path in apiDefinition.paths) {
     for (let method in apiDefinition.paths[path]) {
@@ -109,13 +111,20 @@ module.exports = function (options) {
 
       const routeController = options.operations[methodInfo.operationId]
       const expressFriendlyPath = path.replace(/\/{/, "/:").replace("\}","")
-      router[method](expressFriendlyPath,
+      api[method](expressFriendlyPath,
         bodyParser.json(), // TODO: infer parsing middleware from API spec
         validateRequest,
         routeController
       )
     }
   }
+
+  if (basePath) {
+    router.use(basePath, api)
+  } else {
+    router.use(api)
+  }
+
   return router
 }
 
