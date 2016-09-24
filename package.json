@@ -1,6 +1,6 @@
 {
   "name": "confident",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Use Express with OpenAPI / Swagger",
   "main": "index.js",
   "scripts": {
