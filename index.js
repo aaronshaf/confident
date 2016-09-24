@@ -30,12 +30,32 @@ module.exports = function (options) {
   api.get('/' + path.basename(options.definition), (req, res) => {
     res.header('Content-Type', 'text/yaml')
     res.send(yaml)
-  }),
+  })
   api.get('/' + path.basename(options.definition, '.yml') + '.json', (req, res) => {
     res.header('Content-Type', 'application/json')
     res.send(JSON.stringify(apiDefinition, null, 2))
-  }),
-  api.use('/docs', express.static(path.join(__dirname, './node_modules/react-openapi/build/')))
+  })
+  const devModulePath = path.join(__dirname, './node_modules/react-openapi/build/')
+  const prodModulePath = path.join(__dirname, '../react-openapi/build/')
+
+  let isDev = false
+  let isProd = false
+  try {
+    // node is terrible at this
+    fs.accessSync(prodModulePath)
+    isProd = true
+  } catch (error) {
+    try {
+      fs.accessSync(devModulePath)
+      isProd = true
+    } catch (error) {}
+  }
+
+  if (isProd) {
+    api.use('/docs', express.static(prodModulePath))
+  } else if (isDev) {
+    api.use('/docs', express.static(devModulePath))
+  }
 
   for (let path in apiDefinition.paths) {
     for (let method in apiDefinition.paths[path]) {
