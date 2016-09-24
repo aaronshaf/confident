@@ -28,6 +28,7 @@
   "homepage": "https://github.com/aaronshaf/confident#readme",
   "dependencies": {
     "ajv": "^4.7.3",
+    "chalk": "^1.1.3",
     "express": "^4.14.0",
     "js-yaml": "^3.6.1",
     "lodash": "^4.16.1",

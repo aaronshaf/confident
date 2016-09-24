@@ -7,6 +7,7 @@ const pick = require('lodash/pick')
 const fromPairs = require('lodash/fromPairs')
 const Ajv = require('ajv')
 const bodyParser = require('body-parser')
+const chalk = require('chalk')
 
 const ajv = new Ajv({ removeAdditional: true })
 const swaggerDefinitionJson = fs.readFileSync(path.join(__dirname, './lib/definitions/swagger-2.json'), 'utf8')
@@ -129,6 +130,10 @@ module.exports = function (options) {
         next()
       }
 
+      if (!options.operations[methodInfo.operationId]) {
+        console.log(chalk.red(`The operation ${chalk.bold(methodInfo.operationId)} is missing`))
+        process.exit(1)
+      }
       const routeController = options.operations[methodInfo.operationId]
       const expressFriendlyPath = path.replace(/\/{/, "/:").replace("\}","")
       api[method](expressFriendlyPath,
