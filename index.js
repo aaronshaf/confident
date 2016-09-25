@@ -1,5 +1,5 @@
 const express = require('express')
-const router = express.Router()
+const router = express.Router({mergeParams: true})
 const safeLoad = require('js-yaml').safeLoad
 const fs = require('fs')
 const path = require('path')
@@ -26,7 +26,7 @@ module.exports = function (options) {
 
   const basePath = apiDefinition.basePath ? (apiDefinition.basePath) : ''
 
-  const api = express.Router()
+  const api = express.Router({mergeParams: true})
 
   api.get('/' + path.basename(options.definition), (req, res) => {
     res.header('Content-Type', 'text/yaml')
