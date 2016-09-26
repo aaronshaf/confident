@@ -14,10 +14,11 @@ info:
 paths:
   /hello:
     get:
+      summary: Say hello to the world
       operationId: greet
       responses:
         200:
-          description: Say hello to the world.
+          description: Sweet success
 ```
 
 ### index.js
@@ -26,20 +27,17 @@ paths:
 const confident = require('confident')
 const express = require('express')
 const app = express()
-const greet = require('./greet')
 
 function greet (req, res) {
   res.json('Hello, world.')
 }
 
 app.use(confident({
-  definition: '/api.yml',
+  definition: './api.yml',
   operations: { greet }
 }))
 
-app.listen(3000, function () {
-  console.log('Listening on port 3000!')
-})
+app.listen(3000)
 ```
 
 ## Generated documentation

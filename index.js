@@ -48,7 +48,7 @@ module.exports = function (options) {
   } catch (error) {
     try {
       fs.accessSync(devModulePath)
-      isProd = true
+      isDev = true
     } catch (error) {}
   }
 

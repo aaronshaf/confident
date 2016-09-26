@@ -5,7 +5,8 @@ info:
 paths:
   /hello:
     get:
+      summary: Say hello to the world
       operationId: greet
       responses:
         200:
-          description: Say hello to the world.
+          description: Sweet success
