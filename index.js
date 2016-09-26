@@ -53,9 +53,9 @@ module.exports = function (options) {
   }
 
   if (isProd) {
-    api.use('/docs', express.static(prodModulePath))
+    api.use(options.docsEndpoint || '/docs', express.static(prodModulePath))
   } else if (isDev) {
-    api.use('/docs', express.static(devModulePath))
+    api.use(options.docsEndpoint || '/docs', express.static(devModulePath))
   }
 
   for (let path in apiDefinition.paths) {
