@@ -135,7 +135,7 @@ module.exports = function (options) {
         process.exit(1)
       }
       const routeController = options.operations[methodInfo.operationId]
-      const expressFriendlyPath = path.replace(/\/{/, "/:").replace("\}","")
+      const expressFriendlyPath = path.replace(/\/{/g, "/:").replace(new RegExp("\}", "g"),"")
       api[method](expressFriendlyPath,
         bodyParser.json(), // TODO: infer parsing middleware from API spec
         validateRequest,
