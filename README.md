@@ -48,7 +48,7 @@ app.listen(3000)
 
 ## Tutorial video
 
-* [https://cl.ly/0w1S0Q1O3o3z](Starting from scratch (4m53s))
+* [Starting from scratch (4m53s)](https://cl.ly/0w1S0Q1O3o3z)
 
 ## See also
 
