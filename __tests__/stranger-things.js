@@ -1,22 +1,16 @@
-describe('root docs', () => {
+describe('sanity', () => {
   let request
   let app
 
   beforeEach(() => {
     Object.keys(require.cache).forEach(function(key) { delete require.cache[key] })
     request = require('supertest')
-    app = require('../examples/root-docs')
+    app = require('../examples/stranger-things')
   })
 
-  it('404 on GET /docs/', () => {
+  it('200 on GET /characters/1', () => {
     return request(app)
-      .get('/docs/')
-      .expect(404)
-  })
-
-  it('200 on GET /', () => {
-    return request(app)
-      .get('/')
+      .get('/characters/1')
       .expect(200)
   })
 })

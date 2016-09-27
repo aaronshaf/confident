@@ -9,12 +9,12 @@ const Ajv = require('ajv')
 const bodyParser = require('body-parser')
 const chalk = require('chalk')
 
-const ajv = new Ajv({ removeAdditional: true })
-const swaggerDefinitionJson = fs.readFileSync(path.join(__dirname, './lib/definitions/swagger-2.json'), 'utf8')
-const swaggerSchema = JSON.parse(swaggerDefinitionJson)
-const validateApiDefinition = new Ajv().compile(swaggerSchema)
-
 module.exports = function (options) {
+  const ajv = new Ajv({ removeAdditional: true })
+  const swaggerDefinitionJson = fs.readFileSync(path.join(__dirname, './lib/definitions/swagger-2.json'), 'utf8')
+  const swaggerSchema = JSON.parse(swaggerDefinitionJson)
+  const validateApiDefinition = new Ajv().compile(swaggerSchema)
+
   const yaml = fs.readFileSync(options.definition, 'utf8')
   const apiDefinition = safeLoad(yaml)
 
@@ -28,6 +28,7 @@ module.exports = function (options) {
 
   const api = express.Router({mergeParams: true})
 
+  // console.log('/' + path.basename(options.definition))
   api.get('/' + path.basename(options.definition), (req, res) => {
     res.header('Content-Type', 'text/yaml')
     res.send(yaml)
@@ -88,8 +89,10 @@ module.exports = function (options) {
         validators.push((req, res) => {
           const valid = validateBody(req.body)
           if (!valid) {
-            return res.status(400).json(validateBody.errors)
+            res.status(400).json(validateBody.errors)
+            return false
           }
+          return true
         })
       }
 
@@ -122,14 +125,19 @@ module.exports = function (options) {
         validators.push((req, res) => {
           const valid = validateQueryParams(req.query)
           if (!valid) {
-            return res.status(400).json(validateQueryParams.errors)
+            res.status(400).json(validateQueryParams.errors)
+            return false
           }
+          return true
         })
       }
 
       const validateRequest = (req, res, next) => {
-        validators.forEach((validator) => validator(req, res))
-        next()
+        const validations = validators.map((validator) => validator(req, res))
+        const allWereValid = validations.every((validation) => validation)
+        if (allWereValid) {
+          next()
+        }
       }
 
       if (!options.operations[methodInfo.operationId]) {

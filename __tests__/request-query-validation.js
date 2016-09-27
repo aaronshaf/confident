@@ -1,20 +1,26 @@
-const request = require('supertest')
-const app = require('../examples/stranger-things')
-
 describe('request query validation', () => {
-  test('invalid GET /search', () => {
+  let request
+  let app
+
+  beforeEach(() => {
+    Object.keys(require.cache).forEach(function(key) { delete require.cache[key] })
+    request = require('supertest')
+    app = require('../examples/stranger-things')
+  })
+
+  it('invalid GET /search', () => {
     return request(app)
       .get('/search')
       .expect(400)
   })
 
-  test('valid GET /search', () => {
+  it('valid GET /search', () => {
     return request(app)
       .get('/search?q=')
       .expect(200)
   })
 
-  test('valid GET /search (2)', () => {
+  it('valid GET /search (2)', () => {
     return request(app)
       .get('/search?q=B')
       .expect(200)

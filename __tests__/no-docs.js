@@ -1,11 +1,11 @@
-describe('root docs', () => {
+describe('no docs', () => {
   let request
   let app
 
   beforeEach(() => {
     Object.keys(require.cache).forEach(function(key) { delete require.cache[key] })
     request = require('supertest')
-    app = require('../examples/root-docs')
+    app = require('../examples/no-docs')
   })
 
   it('404 on GET /docs/', () => {
@@ -14,9 +14,9 @@ describe('root docs', () => {
       .expect(404)
   })
 
-  it('200 on GET /', () => {
+  it('404 on GET /', () => {
     return request(app)
       .get('/')
-      .expect(200)
+      .expect(404)
   })
 })
