@@ -52,10 +52,12 @@ module.exports = function (options) {
     } catch (error) {}
   }
 
-  if (isProd) {
-    api.use(options.docsEndpoint || '/docs', express.static(prodModulePath))
-  } else if (isDev) {
-    api.use(options.docsEndpoint || '/docs', express.static(devModulePath))
+  if (options.docsEndpoint !== false) {
+    if (isProd) {
+      api.use(options.docsEndpoint || '/docs', express.static(prodModulePath))
+    } else if (isDev) {
+      api.use(options.docsEndpoint || '/docs', express.static(devModulePath))
+    }
   }
 
   for (let path in apiDefinition.paths) {
