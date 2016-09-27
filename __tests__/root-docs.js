@@ -14,3 +14,5 @@ describe('root docs', () => {
       .expect(200)
   })
 })
+
+// TODO: test docsEndpoint === false
