@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router({mergeParams: true})
-const safeLoad = require('js-yaml').safeLoad
+const { safeLoad, safeDump } = require('js-yaml')
 const fs = require('fs')
 const path = require('path')
 const pick = require('lodash/pick')
@@ -8,6 +8,7 @@ const fromPairs = require('lodash/fromPairs')
 const Ajv = require('ajv')
 const bodyParser = require('body-parser')
 const chalk = require('chalk')
+const generateSchema = require('generate-schema')
 
 module.exports = function (options) {
   const ajv = new Ajv({ removeAdditional: true })
@@ -140,20 +141,46 @@ module.exports = function (options) {
         }
       }
 
+      api.use(bodyParser.json())
+
+      const isDevEnvironment = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+      if (isDevEnvironment && options.suggestDefinitions) {
+        api.use((req, res, next) => {
+          let body
+          if (req.is('json')) {
+            const propSchemas = generateSchema.json('Request Body', req.body).properties
+            const parameters = []
+            for (prop in propSchemas) {
+              parameters.push({
+                name: prop,
+                in: 'body',
+                schema: propSchemas[prop]
+              })
+            }
+            const obj = {
+              [req.path]: {
+                [req.method.toLowerCase()]: {
+                  parameters
+                }
+              }
+            }
+            console.log(chalk.yellow(
+              safeDump(obj, {level: 2})
+            ))
+          }
+          next()
+        })
+      }
+
       const expressFriendlyPath = path.replace(/\/{/g, "/:").replace(new RegExp("\}", "g"),"")
-      api[method](expressFriendlyPath,
-        bodyParser.json(), // TODO: infer parsing middleware from API spec
-        validateRequest
-      )
+      api[method](expressFriendlyPath, validateRequest)
       if (methodInfo.operationId) {
         if (!options.operations[methodInfo.operationId]) {
           console.log(chalk.red(`The operation ${chalk.bold(methodInfo.operationId)} is missing`))
           process.exit(1)
         }
         const routeController = options.operations[methodInfo.operationId]
-        api[method](expressFriendlyPath,
-          routeController
-        )
+        api[method](expressFriendlyPath, routeController)
       }
     }
   }
