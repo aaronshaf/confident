@@ -140,17 +140,21 @@ module.exports = function (options) {
         }
       }
 
-      if (!options.operations[methodInfo.operationId]) {
-        console.log(chalk.red(`The operation ${chalk.bold(methodInfo.operationId)} is missing`))
-        process.exit(1)
-      }
-      const routeController = options.operations[methodInfo.operationId]
       const expressFriendlyPath = path.replace(/\/{/g, "/:").replace(new RegExp("\}", "g"),"")
       api[method](expressFriendlyPath,
         bodyParser.json(), // TODO: infer parsing middleware from API spec
-        validateRequest,
-        routeController
+        validateRequest
       )
+      if (methodInfo.operationId) {
+        if (!options.operations[methodInfo.operationId]) {
+          console.log(chalk.red(`The operation ${chalk.bold(methodInfo.operationId)} is missing`))
+          process.exit(1)
+        }
+        const routeController = options.operations[methodInfo.operationId]
+        api[method](expressFriendlyPath,
+          routeController
+        )
+      }
     }
   }
 

@@ -30,7 +30,11 @@ paths:
       operationId: getCharacter
       responses:
         200:
-          description: Character
+          description: Successs
+    put:
+      responses:
+        200:
+          description: Success
 
   /search:
     get:
