@@ -1,12 +1,11 @@
 const assert = require('assert')
 const request = require('supertest')
-const app = require('../examples/stranger-things')
 
 describe('request body invalidation', () => {
   let app
 
   beforeEach(() => {
-    Object.keys(require.cache).forEach(function(key) { delete require.cache[key] })
+    Object.keys(require.cache).forEach(function (key) { delete require.cache[key] })
     app = require('../examples/stranger-things')
   })
 
@@ -19,7 +18,7 @@ describe('request body invalidation', () => {
         .expect(200)
         .end((error, response) => {
           characterCount = response.body.data.length
-          done()
+          done(error)
         })
     })
 
@@ -54,7 +53,7 @@ describe('successful request body validation', () => {
   let app
 
   before(() => {
-    Object.keys(require.cache).forEach(function(key) { delete require.cache[key] })
+    Object.keys(require.cache).forEach(function (key) { delete require.cache[key] })
     app = require('../examples/stranger-things')
   })
 
@@ -64,7 +63,7 @@ describe('successful request body validation', () => {
       .expect(200)
       .end((error, response) => {
         characterCount = response.body.data.length
-        done()
+        done(error)
       })
   })
 

@@ -3,7 +3,7 @@ describe('request query validation', () => {
   let app
 
   beforeEach(() => {
-    Object.keys(require.cache).forEach(function(key) { delete require.cache[key] })
+    Object.keys(require.cache).forEach(function (key) { delete require.cache[key] })
     request = require('supertest')
     app = require('../examples/stranger-things')
   })

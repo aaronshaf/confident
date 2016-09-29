@@ -2,7 +2,6 @@ const express = require('express')
 const { safeDump } = require('js-yaml')
 const path = require('path')
 const bodyParser = require('body-parser')
-const chalk = require('chalk')
 
 const loadSpecification = require('./lib/load-specification')
 const validateSpecification = require('./lib/validate-specification')
