@@ -1,6 +1,6 @@
 const request = require('supertest')
 
-describe('sanity', () => {
+describe('hello-world', () => {
   let request
   let app
 

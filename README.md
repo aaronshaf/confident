@@ -33,7 +33,8 @@ function greet (req, res) {
 }
 
 app.use(confident({
-  definition: './api.yml',
+  specification: './api.yml',
+  docsEndpoint: '/docs',
   operations: { greet }
 }))
 

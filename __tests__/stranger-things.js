@@ -1,4 +1,4 @@
-describe('sanity', () => {
+describe('stranger-things', () => {
   let request
   let app
 

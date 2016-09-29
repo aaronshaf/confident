@@ -8,8 +8,8 @@ function greet (req, res) {
 }
 
 app.use(confident({
-  definition: path.join(__dirname, './api.yml'),
-  suggestDefinitions: true,
+  specification: path.join(__dirname, './api.yml'),
+  suggestSchemas: true,
   operations: { greet }
 }))
 

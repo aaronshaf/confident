@@ -1,201 +1,59 @@
 const express = require('express')
-const router = express.Router({mergeParams: true})
-const { safeLoad, safeDump } = require('js-yaml')
-const fs = require('fs')
+const { safeDump } = require('js-yaml')
 const path = require('path')
-const pick = require('lodash/pick')
-const fromPairs = require('lodash/fromPairs')
-const Ajv = require('ajv')
 const bodyParser = require('body-parser')
 const chalk = require('chalk')
-const generateSchema = require('generate-schema')
+
+const loadSpecification = require('./lib/load-specification')
+const validateSpecification = require('./lib/validate-specification')
+const suggestSchemas = require('./lib/suggest-schemas')
+const serveDocs = require('./lib/serve-docs')
+const validateRequest = require('./lib/validate-request')
 
 module.exports = function (options) {
-  const ajv = new Ajv({ removeAdditional: true })
-  const swaggerDefinitionJson = fs.readFileSync(path.join(__dirname, './lib/definitions/swagger-2.json'), 'utf8')
-  const swaggerSchema = JSON.parse(swaggerDefinitionJson)
-  const validateApiDefinition = new Ajv().compile(swaggerSchema)
+  const isDevEnvironment = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 
-  const yaml = fs.readFileSync(options.definition, 'utf8')
-  const apiDefinition = safeLoad(yaml)
+  // load and validate specification
+  const apiSpecification = loadSpecification(options.specification)
+  validateSpecification(apiSpecification)
 
-  const apiDefinitionValid = validateApiDefinition(apiDefinition)
-  if (!apiDefinitionValid) {
-    console.log(validateApiDefinition.errors)
-    throw new Error('API definition is not valid')
-  }
+  // create confident middleware
+  const apiRouter = express.Router({mergeParams: true})
+  apiRouter.use(bodyParser.json())
 
-  const basePath = apiDefinition.basePath ? (apiDefinition.basePath) : ''
-
-  const api = express.Router({mergeParams: true})
-
-  // console.log('/' + path.basename(options.definition))
-  api.get('/' + path.basename(options.definition), (req, res) => {
+  // serve /api.yml
+  apiRouter.get(`/${path.basename(options.specification)}`, (req, res) => {
     res.header('Content-Type', 'text/yaml')
-    res.send(yaml)
+    res.send(safeDump(apiSpecification))
   })
-  api.get('/' + path.basename(options.definition, '.yml') + '.json', (req, res) => {
+
+  // serve /api.json
+  apiRouter.get('/' + path.basename(options.specification, '.yml') + '.json', (req, res) => {
     res.header('Content-Type', 'application/json')
-    res.send(JSON.stringify(apiDefinition, null, 2))
+    res.send(JSON.stringify(apiSpecification, null, 2))
   })
-  const devModulePath = path.join(__dirname, './node_modules/react-openapi/build/')
-  const prodModulePath = path.join(__dirname, '../react-openapi/build/')
 
-  let isDev = false
-  let isProd = false
-  try {
-    // node is terrible at this
-    fs.accessSync(prodModulePath)
-    isProd = true
-  } catch (error) {
-    try {
-      fs.accessSync(devModulePath)
-      isDev = true
-    } catch (error) {}
+  // serve docs
+  if (options.docsEndpoint) {
+    apiRouter.use(serveDocs(options.docsEndpoint))
   }
 
-  if (options.docsEndpoint !== false) {
-    if (isProd) {
-      api.use(options.docsEndpoint || '/docs', express.static(prodModulePath))
-    } else if (isDev) {
-      api.use(options.docsEndpoint || '/docs', express.static(devModulePath))
-    }
+  // suggest schemas
+  if (isDevEnvironment && options.suggestSchemas) {
+    apiRouter.use(suggestSchemas)
   }
 
-  for (let path in apiDefinition.paths) {
-    for (let method in apiDefinition.paths[path]) {
-      const methodInfo = apiDefinition.paths[path][method]
-      const validators = []
+  // validate request body, query params (TODO: headers, path params)
+  apiRouter.use(validateRequest(apiSpecification, options.operations))
 
-      // validate request body
-      const bodyPropertySchemas = (methodInfo.parameters || [])
-        .filter(inBody)
-        .map((param) => {
-          const schema = Object.assign({},
-            (param.schema || {})
-          )
-          return [param.name, schema]
-        })
-      if (bodyPropertySchemas.length) {
-        const required = methodInfo.parameters
-          .filter(inBody)
-          .filter((param) => param.required)
-          .map((param) => param.name)
-        const bodySchema = {
-          type: 'object',
-          required,
-          properties: fromPairs(bodyPropertySchemas)
-        }
-        const validateBody = ajv.compile(bodySchema)
-        validators.push((req, res) => {
-          const valid = validateBody(req.body)
-          if (!valid) {
-            res.status(400).json(validateBody.errors)
-            return false
-          }
-          return true
-        })
-      }
-
-      const nonBodySchemaFields = [
-        'type', 'items', 'exclusiveMaximum', 'minimum', 'exclusiveMinimum',
-        'maxLength', 'minLength', 'pattern', 'maxItems', 'minItems',
-        'uniqueItems', 'enum', 'multipleOf'
-      ]
-
-      // validate query params
-      const queryParamsSchemas = (methodInfo.parameters || [])
-        .filter(inQuery)
-        .map((param) => {
-          const schema = Object.assign({},
-            pick(param, nonBodySchemaFields)
-          )
-          return [param.name, schema]
-        })
-      if (queryParamsSchemas.length) {
-        const required = methodInfo.parameters
-          .filter(inQuery)
-          .filter((param) => param.required)
-          .map((param) => param.name)
-        const queryParamsSchema = {
-          type: 'object',
-          required,
-          properties: fromPairs(queryParamsSchemas)
-        }
-        const validateQueryParams = ajv.compile(queryParamsSchema)
-        validators.push((req, res) => {
-          const valid = validateQueryParams(req.query)
-          if (!valid) {
-            res.status(400).json(validateQueryParams.errors)
-            return false
-          }
-          return true
-        })
-      }
-
-      const validateRequest = (req, res, next) => {
-        const validations = validators.map((validator) => validator(req, res))
-        const allWereValid = validations.every((validation) => validation)
-        if (allWereValid) {
-          next()
-        }
-      }
-
-      api.use(bodyParser.json())
-
-      const isDevEnvironment = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
-      if (isDevEnvironment && options.suggestDefinitions) {
-        api.use((req, res, next) => {
-          let body
-          if (req.is('json')) {
-            const propSchemas = generateSchema.json('Request Body', req.body).properties
-            const parameters = []
-            for (prop in propSchemas) {
-              parameters.push({
-                name: prop,
-                in: 'body',
-                schema: propSchemas[prop]
-              })
-            }
-            const obj = {
-              [req.path]: {
-                [req.method.toLowerCase()]: {
-                  parameters
-                }
-              }
-            }
-            console.log(chalk.yellow(
-              safeDump(obj, {level: 2})
-            ))
-          }
-          next()
-        })
-      }
-
-      const expressFriendlyPath = path.replace(/\/{/g, "/:").replace(new RegExp("\}", "g"),"")
-      api[method](expressFriendlyPath, validateRequest)
-      if (methodInfo.operationId) {
-        if (!options.operations[methodInfo.operationId]) {
-          console.log(chalk.red(`The operation ${chalk.bold(methodInfo.operationId)} is missing`))
-          process.exit(1)
-        }
-        const routeController = options.operations[methodInfo.operationId]
-        api[method](expressFriendlyPath, routeController)
-      }
-    }
-  }
-
+  // respect specification's basePath
+  const basePath = apiSpecification.basePath ? (apiSpecification.basePath) : ''
+  const baseRouter = express.Router({mergeParams: true})
   if (basePath) {
-    router.use(basePath, api)
+    baseRouter.use(basePath, apiRouter)
   } else {
-    router.use(api)
+    baseRouter.use(apiRouter)
   }
 
-  return router
+  return baseRouter
 }
-
-const inBody = (parameter) => parameter.in === 'body'
-const inPath = (parameter) => parameter.in === 'path'
-const inQuery = (parameter) => parameter.in === 'query'
-const inFormData = (parameter) => parameter.in === 'formData'
-const inHeader = (parameter) => parameter.in === 'header'
