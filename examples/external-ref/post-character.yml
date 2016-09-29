@@ -1,0 +1,6 @@
+parameters:
+  - name: name
+    in: body
+    required: true
+    schema:
+      type: string
