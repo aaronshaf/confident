@@ -53,6 +53,7 @@ app.listen(3000)
 
 ## See also
 
+* [swagger-express-middleware](https://github.com/BigstickCarpet/swagger-express-middleware)
 * [swaggerize-express](https://github.com/krakenjs/swaggerize-express)
 * [swaggerize-routes](https://github.com/krakenjs/swaggerize-routes)
 * [swagger-tools](https://github.com/apigee-127/swagger-tools)
