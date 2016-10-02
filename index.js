@@ -43,7 +43,11 @@ module.exports = function (options) {
   }
 
   // validate request body, query params (TODO: headers, path params)
-  apiRouter.use(validateRequest(apiSpecification, options.operations))
+  apiRouter.use(validateRequest(
+    apiSpecification,
+    options.operations,
+    options.ajvOptions || {}
+  ))
 
   // respect specification's basePath
   const basePath = apiSpecification.basePath ? (apiSpecification.basePath) : ''
