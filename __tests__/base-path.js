@@ -28,11 +28,11 @@ describe('base path', () => {
 
   it('404 on /docs/', () => {
     return request(app)
-      .get('/docs/')
+      .get('/docs')
       .expect(404)
   })
 
-  it('200 on /docs', () => {
+  it('200 on /api/docs/', () => {
     return request(app)
       .get('/api/docs/')
       .expect(200)
