@@ -4,6 +4,18 @@
 npm install confident --save
 ```
 
+## Features
+
+* Works with existing Express app.
+* Everything is opt-in. Incrementally integrate or eject.
+* Validate your API schema.
+* Validate requests.
+* Validate responses.
+* Serves up API documentation.
+* Serves up /api.yml and /api.json available.
+* Suggests schemas to increase coverage.
+* Supports basePath.
+
 ### api.yaml
 
 ```yaml
