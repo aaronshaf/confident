@@ -8,6 +8,7 @@ const validateSpecification = require('./lib/validate-specification')
 const suggestSchemas = require('./lib/suggest-schemas')
 const serveDocs = require('./lib/serve-docs')
 const validateRequest = require('./lib/validate-request')
+const validateResponse = require('./lib/validate-response')
 
 module.exports = function (options) {
   const isDevEnvironment = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
@@ -40,6 +41,14 @@ module.exports = function (options) {
   // suggest schemas
   if (isDevEnvironment && options.suggestSchemas) {
     apiRouter.use(suggestSchemas)
+  }
+
+  if (options.onResponseValidationError) {
+    apiRouter.use(validateResponse(
+      apiSpecification,
+      options.ajvOptions || {},
+      options.onResponseValidationError
+    ))
   }
 
   // validate request body, query params (TODO: headers, path params)
