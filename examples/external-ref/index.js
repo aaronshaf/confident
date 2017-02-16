@@ -21,24 +21,27 @@ let characters = [
 ]
 
 function getCharacters (req, res) {
-  res.json({ data: characters })
+  res.json({data: characters})
 }
 
-const postCharacter = operation(
-  (req, res) => {
-    characters.push(req.body.name)
-    res.status(201).end()
-  }
-)
+const postCharacter = operation((req, res) => {
+  characters.push(req.body.name)
+  res.status(201).end()
+})
 
 app.set('json spaces', 2)
-app.use(confident({
-  specification: path.join(__dirname, './api.yml'),
-  operations: {
-    getCharacters,
-    postCharacter
-  }
-}))
+app.use(
+  confident({
+    specification: path.join(__dirname, './api.yml'),
+    operations: {
+      getCharacters,
+      postCharacter
+    },
+    onRequestValidationError: (req, res, errors, next) => {
+      res.status(400).json({errors})
+    }
+  })
+)
 
 if (!module.parent) {
   app.listen(3000, () => {

@@ -11,14 +11,16 @@ function hai (req, res) {
   res.json('Oh, hai.')
 }
 
-app.use(confident({
-  specification: path.join(__dirname, './api.yml'),
-  docsEndpoint: '/docs',
-  operations: { greet, hai },
-  onResponseValidationError: (req, res, errors, next) => {
-    res.status(500).json({errors})
-  }
-}))
+app.use(
+  confident({
+    specification: path.join(__dirname, './api.yml'),
+    docsEndpoint: '/docs',
+    operations: {greet, hai},
+    onResponseValidationError: (req, res, errors, next) => {
+      res.status(500).json({errors})
+    }
+  })
+)
 
 if (!module.parent) {
   app.listen(3000, () => {

@@ -4,13 +4,13 @@ const request = require('supertest')
 describe('request body invalidation', () => {
   let app
 
-  beforeEach(() => {
-    Object.keys(require.cache).forEach(function (key) { delete require.cache[key] })
-    app = require('../examples/stranger-things')
-  })
-
   describe('invalid POST /characters', (done) => {
     let characterCount
+
+    before(() => {
+      Object.keys(require.cache).forEach(function (key) { delete require.cache[key] })
+      app = require('../examples/stranger-things')
+    })
 
     before((done) => {
       request(app)
@@ -38,13 +38,13 @@ describe('request body invalidation', () => {
         })
         .end(done)
     })
-  })
 
-  it('invalid POST /characters (2)', () => {
-    return request(app)
+    it('invalid POST /characters (2)', () => {
+      return request(app)
       .post('/characters')
       .send({name: 1})
       .expect(400)
+    })
   })
 })
 

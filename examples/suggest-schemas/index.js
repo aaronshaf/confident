@@ -7,11 +7,16 @@ function greet (req, res) {
   res.json('Hello, world.')
 }
 
-app.use(confident({
-  specification: path.join(__dirname, './api.yml'),
-  suggestSchemas: true,
-  operations: { greet }
-}))
+app.use(
+  confident({
+    specification: path.join(__dirname, './api.yml'),
+    suggestSchemas: true,
+    operations: {greet},
+    onRequestValidationError: (req, res, errors, next) => {
+      res.status(400).json({errors})
+    }
+  })
+)
 
 app.post('/foo/:bar', (req, res) => {
   res.json({

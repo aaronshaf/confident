@@ -7,10 +7,15 @@ function greet (req, res) {
   res.json('Hello, world.')
 }
 
-app.use(confident({
-  specification: path.join(__dirname, './api.yml'),
-  operations: { greet }
-}))
+app.use(
+  confident({
+    specification: path.join(__dirname, './api.yml'),
+    operations: {greet},
+    onRequestValidationError: (req, res, errors, next) => {
+      res.status(400).json({errors})
+    }
+  })
+)
 
 if (!module.parent) {
   app.listen(3000, () => {

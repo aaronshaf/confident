@@ -21,11 +21,11 @@ let characters = [
 ]
 
 function searchCharacters (req, res) {
-  return res.json({ data: [] })
+  return res.json({data: []})
 }
 
 function getCharacters (req, res) {
-  res.json({ data: characters })
+  res.json({data: characters})
 }
 
 function getCharacter (req, res) {
@@ -34,23 +34,26 @@ function getCharacter (req, res) {
   })
 }
 
-const postCharacter = operation(
-  (req, res) => {
-    characters.push(req.body.name)
-    res.status(201).end()
-  }
-)
+const postCharacter = operation((req, res) => {
+  characters.push(req.body.name)
+  res.status(201).end()
+})
 
 app.set('json spaces', 2)
-app.use(confident({
-  specification: path.join(__dirname, './api.yml'),
-  operations: {
-    getCharacters,
-    getCharacter,
-    postCharacter,
-    searchCharacters
-  }
-}))
+app.use(
+  confident({
+    specification: path.join(__dirname, './api.yml'),
+    operations: {
+      getCharacters,
+      getCharacter,
+      postCharacter,
+      searchCharacters
+    },
+    onRequestValidationError: (req, res, errors, next) => {
+      res.status(400).json({errors})
+    }
+  })
+)
 
 if (!module.parent) {
   app.listen(3000, () => {
