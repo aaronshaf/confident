@@ -7,13 +7,16 @@ function greet (req, res) {
   res.json('Hello, world.')
 }
 
+function hai (req, res) {
+  res.json('Oh, hai.')
+}
+
 app.use(confident({
   specification: path.join(__dirname, './api.yml'),
   docsEndpoint: '/docs',
-  operations: { greet },
+  operations: { greet, hai },
   onResponseValidationError: (req, res, errors, next) => {
     res.status(500).json({errors})
-    next()
   }
 }))
 

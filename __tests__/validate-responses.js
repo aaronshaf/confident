@@ -12,7 +12,7 @@ describe('validate-responses', () => {
     app = require('../examples/validate-responses')
   })
 
-  it('200 on GET /hello', done => {
+  it('500 on GET /hello', done => {
     request(app).get('/hello').expect(500).end((error, response) => {
       assert.deepEqual(response.body.errors[0], {
         keyword: 'type',
@@ -23,5 +23,9 @@ describe('validate-responses', () => {
       })
       done(error)
     })
+  })
+
+  it('200 on GET /hai', done => {
+    request(app).get('/hai').expect(200).end(done)
   })
 })

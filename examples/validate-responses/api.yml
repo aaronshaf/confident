@@ -5,10 +5,17 @@ info:
 paths:
   /hello:
     get:
-      summary: Say hello to the world
       operationId: greet
       responses:
         200:
           description: Sweet success
           schema:
-            $ref: get-response.json
+            $ref: get-hello-response.json
+  /hai:
+    get:
+      operationId: hai
+      responses:
+        200:
+          description: Sweet success
+          schema:
+            type: string
