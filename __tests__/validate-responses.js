@@ -1,6 +1,6 @@
 const assert = require('assert')
 
-describe.only('validate-responses', () => {
+describe('validate-responses', () => {
   let request
   let app
 
