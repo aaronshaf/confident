@@ -1,4 +1,4 @@
-Confident treats your API specification (a .json or .yml file) as the source of truth for routes, documentation, and request/response validation.
+Confident treats your API specification (a .json or .yml file) as the source of truth for express routes, API documentation, and request/response validation.
 
 ## Features
 
