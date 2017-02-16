@@ -12,7 +12,7 @@ npm install confident --save
 * Validate requests.
 * Validate responses.
 * Serves up API documentation.
-* Serves up /api.yml and /api.json available.
+* Serves up /api.yml and /api.json.
 * Suggests schemas to increase coverage.
 * Supports basePath.
 
