@@ -1,8 +1,4 @@
-## Get started
-
-```
-npm install confident --save
-```
+Confident treats your API specification (a .json or .yml file) as the source of truth for routes, documentation, and request/response validation.
 
 ## Features
 
@@ -15,6 +11,12 @@ npm install confident --save
 * Serves up /api.yml and /api.json.
 * Suggests schemas to increase coverage.
 * Supports basePath.
+
+## Get started
+
+```
+npm install confident --save
+```
 
 ### api.yaml
 
