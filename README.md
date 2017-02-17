@@ -8,7 +8,7 @@ Confident treats your API specification (a .json or .yml file) as the source of 
 * Validate requests.
 * Validate responses.
 * Serves up API documentation.
-* Serves up /api.yml and /api.json.
+* Serves up /api.json.
 * Suggests schemas to increase coverage.
 * Supports basePath.
 
