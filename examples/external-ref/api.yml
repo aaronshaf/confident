@@ -9,10 +9,7 @@ produces:
 paths:
   /characters:
     get:
-      operationId: getCharacters
-      responses:
-        200:
-          description: List of characters
+      $ref: get-characters.json
     post:
       operationId: postCharacter
       parameters:

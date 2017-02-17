@@ -1,0 +1,8 @@
+{
+  "operationId": "getCharacters",
+  "responses": {
+    "200": {
+      "description": "List of characters"
+    }
+  }
+}
