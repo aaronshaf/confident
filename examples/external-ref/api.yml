@@ -11,9 +11,4 @@ paths:
     get:
       $ref: get-characters.json
     post:
-      operationId: postCharacter
-      parameters:
-        $ref: post-character.yml#/parameters
-      responses:
-        201:
-          description: Successfully added character
+      $ref: post-character.yml
