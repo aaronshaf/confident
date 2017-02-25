@@ -1,6 +1,4 @@
 const express = require('express')
-const {safeDump} = require('js-yaml')
-const path = require('path')
 const bodyParser = require('body-parser')
 
 const loadSpecification = require('./lib/load-specification')
@@ -22,14 +20,7 @@ module.exports = function (options) {
   const apiRouter = express.Router({mergeParams: true})
   apiRouter.use(bodyParser.json())
 
-  // serve /api.yml
-  apiRouter.get(`/${path.basename(options.specification)}`, (req, res) => {
-    res.header('Content-Type', 'text/yaml')
-    res.send(safeDump(apiSpecification))
-  })
-
-  // serve /api.json
-  apiRouter.get('/' + path.basename(options.specification, '.yml') + '.json', (
+  apiRouter.get(options.specificationEndpoint || '/api.json', (
     req,
     res
   ) => {
