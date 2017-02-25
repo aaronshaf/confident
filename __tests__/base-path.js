@@ -8,16 +8,10 @@ describe('base path', () => {
     app = require('../examples/base-path')
   })
 
-  it('404 on /api.yml', () => {
+  it('404 on /api.json', () => {
     return request(app)
-      .get('/api.yml')
+      .get('/api.json')
       .expect(404)
-  })
-
-  it('200 on /api/api.yml', () => {
-    return request(app)
-      .get('/api/api.yml')
-      .expect(200)
   })
 
   it('200 on /api/api.json', () => {
