@@ -1,4 +1,4 @@
-Confident treats your API specification (a .json or .yml file) as the source of truth for express routes, API documentation, and request/response validation.
+Confident treats your API specification (a .json file) as the source of truth for express routes, API documentation, and request/response validation.
 
 ## Features
 
@@ -18,21 +18,29 @@ Confident treats your API specification (a .json or .yml file) as the source of 
 npm install confident --save
 ```
 
-### api.yaml
+### api.json
 
-```yaml
-swagger: '2.0'
-info:
-  title: Hello World
-  version: 1.0.0
-paths:
-  /hello:
-    get:
-      summary: Say hello to the world
-      operationId: greet
-      responses:
-        200:
-          description: Sweet success
+```json
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Hello World",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/hello": {
+      "get": {
+        "summary": "Say hello to the world",
+        "operationId": "greet",
+        "responses": {
+          "200": {
+            "description": "Sweet success"
+          }
+        }
+      }
+    }
+  }
+}
 ```
 
 ### index.js
@@ -47,7 +55,7 @@ function greet (req, res) {
 }
 
 app.use(confident({
-  specification: './api.yml',
+  specification: './api.json',
   docsEndpoint: '/docs',
   operations: { greet }
 }))

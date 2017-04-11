@@ -42,7 +42,7 @@ const postCharacter = operation((req, res) => {
 app.set('json spaces', 2)
 app.use(
   confident({
-    specification: path.join(__dirname, './api.yml'),
+    specification: path.join(__dirname, './api.json'),
     operations: {
       getCharacters,
       getCharacter,

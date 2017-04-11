@@ -1,0 +1,20 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Crazy API",
+    "version": "1.0.0"
+  },
+  "basePath": "/api",
+  "paths": {
+    "/hello": {
+      "get": {
+        "operationId": "greet",
+        "responses": {
+          "200": {
+            "description": "Say hello to the world."
+          }
+        }
+      }
+    }
+  }
+}

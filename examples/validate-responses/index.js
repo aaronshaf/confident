@@ -13,7 +13,7 @@ function hai (req, res) {
 
 app.use(
   confident({
-    specification: path.join(__dirname, './api.yml'),
+    specification: path.join(__dirname, './api.json'),
     docsEndpoint: '/docs',
     operations: {greet, hai},
     onResponseValidationError: (req, res, errors, next) => {

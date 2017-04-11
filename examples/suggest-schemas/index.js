@@ -9,7 +9,7 @@ function greet (req, res) {
 
 app.use(
   confident({
-    specification: path.join(__dirname, './api.yml'),
+    specification: path.join(__dirname, './api.json'),
     suggestSchemas: true,
     operations: {greet},
     onRequestValidationError: (req, res, errors, next) => {
