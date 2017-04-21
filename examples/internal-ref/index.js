@@ -14,7 +14,10 @@ app.use(
     operations: {greet},
     onRequestValidationError: (req, res, errors, next) => {
       res.status(400).json({errors})
-    }
+    },
+    onResponseValidationError: (req, res, errors, next) => {
+      res.status(400).json({errors})
+    },
   })
 )
 

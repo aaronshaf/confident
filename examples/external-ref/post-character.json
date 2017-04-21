@@ -2,11 +2,19 @@
   "operationId": "postCharacter",
   "parameters": [
     {
-      "name": "name",
+      "name": "body",
       "in": "body",
       "required": true,
       "schema": {
-        "type": "string"
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
       }
     }
   ],
