@@ -16,8 +16,8 @@ app.use(
       res.status(400).json({errors})
     },
     onResponseValidationError: (req, res, errors, next) => {
-      res.status(400).json({errors})
-    },
+      res.status(500).json({errors})
+    }
   })
 )
 
