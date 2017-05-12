@@ -1114,9 +1114,9 @@ react-fetch@0.0.9:
   dependencies:
     isomorphic-fetch "^2.1.0"
 
-react-openapi@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/react-openapi/-/react-openapi-2.4.0.tgz#d7c3b2e6228fd03486b09ba58e21710d162a16d7"
+react-openapi@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/react-openapi/-/react-openapi-2.4.1.tgz#001eee0c5bc59d04313119486125fed0551e9e15"
   dependencies:
     classnames "^2.2.5"
     markdown-it "^8.3.1"
