@@ -9,21 +9,18 @@ const validateRequest = require('./lib/validate-request')
 const validateResponse = require('./lib/validate-response')
 
 module.exports = function (options) {
-  const isDevEnvironment = !process.env.NODE_ENV ||
-    process.env.NODE_ENV === 'development'
+  const isDevEnvironment =
+    !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 
   // load and validate specification
   const apiSpecification = loadSpecification(options.specification)
   validateSpecification(apiSpecification)
 
   // create confident middleware
-  const apiRouter = express.Router({mergeParams: true})
+  const apiRouter = express.Router({ mergeParams: true })
   apiRouter.use(bodyParser.json())
 
-  apiRouter.get(options.specificationEndpoint || '/api.json', (
-    req,
-    res
-  ) => {
+  apiRouter.get(options.specificationEndpoint || '/api.json', (req, res) => {
     res.header('Content-Type', 'application/json')
     res.send(JSON.stringify(apiSpecification, null, 2))
   })
@@ -60,7 +57,7 @@ module.exports = function (options) {
 
   // respect specification's basePath
   const basePath = apiSpecification.basePath ? apiSpecification.basePath : ''
-  const baseRouter = express.Router({mergeParams: true})
+  const baseRouter = express.Router({ mergeParams: true })
   if (basePath) {
     baseRouter.use(basePath, apiRouter)
   } else {

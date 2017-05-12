@@ -41,10 +41,10 @@
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "eslint": "^3.6.1",
-    "eslint-config-standard": "^6.1.0",
-    "eslint-plugin-promise": "^2.0.1",
-    "eslint-plugin-standard": "^2.0.1",
-    "mocha": "^3.1.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^3.3.0",
     "supertest": "^2.0.0"
   }
 }
