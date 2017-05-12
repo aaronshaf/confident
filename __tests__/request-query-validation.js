@@ -3,26 +3,22 @@ describe('request query validation', () => {
   let app
 
   beforeEach(() => {
-    Object.keys(require.cache).forEach(function (key) { delete require.cache[key] })
+    Object.keys(require.cache).forEach(function (key) {
+      delete require.cache[key]
+    })
     request = require('supertest')
     app = require('../examples/stranger-things')
   })
 
   it('invalid GET /search', () => {
-    return request(app)
-      .get('/search')
-      .expect(400)
+    return request(app).get('/search').expect(400)
   })
 
   it('valid GET /search', () => {
-    return request(app)
-      .get('/search?q=')
-      .expect(200)
+    return request(app).get('/search?q=').expect(200)
   })
 
   it('valid GET /search (2)', () => {
-    return request(app)
-      .get('/search?q=B')
-      .expect(200)
+    return request(app).get('/search?q=B').expect(200)
   })
 })

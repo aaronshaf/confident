@@ -21,11 +21,11 @@ let characters = [
 ]
 
 function searchCharacters (req, res) {
-  return res.json({data: []})
+  return res.json({ data: [] })
 }
 
 function getCharacters (req, res) {
-  res.json({data: characters})
+  res.json({ data: characters })
 }
 
 function getCharacter (req, res) {
@@ -50,7 +50,7 @@ app.use(
       searchCharacters
     },
     onRequestValidationError: (req, res, errors, next) => {
-      res.status(400).json({errors})
+      res.status(400).json({ errors })
     }
   })
 )

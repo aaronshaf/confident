@@ -18,7 +18,7 @@ describe('validate-responses', () => {
         keyword: 'type',
         dataPath: '',
         schemaPath: '#/type',
-        params: {type: 'number'},
+        params: { type: 'number' },
         message: 'should be number'
       })
       done(error)

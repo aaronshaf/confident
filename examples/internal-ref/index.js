@@ -11,12 +11,12 @@ app.use(
   confident({
     specification: path.join(__dirname, './api.json'),
     docsEndpoint: '/docs',
-    operations: {greet},
+    operations: { greet },
     onRequestValidationError: (req, res, errors, next) => {
-      res.status(400).json({errors})
+      res.status(400).json({ errors })
     },
     onResponseValidationError: (req, res, errors, next) => {
-      res.status(500).json({errors})
+      res.status(500).json({ errors })
     }
   })
 )

@@ -21,7 +21,7 @@ let characters = [
 ]
 
 function getCharacters (req, res) {
-  res.json({data: characters})
+  res.json({ data: characters })
 }
 
 const postCharacter = operation((req, res) => {
@@ -38,7 +38,7 @@ app.use(
       postCharacter
     },
     onRequestValidationError: (req, res, errors, next) => {
-      res.status(400).json({errors})
+      res.status(400).json({ errors })
     }
   })
 )

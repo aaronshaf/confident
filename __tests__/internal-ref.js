@@ -3,14 +3,14 @@ describe('internal-ref', () => {
   let app
 
   beforeEach(() => {
-    Object.keys(require.cache).forEach(function (key) { delete require.cache[key] })
+    Object.keys(require.cache).forEach(function (key) {
+      delete require.cache[key]
+    })
     request = require('supertest')
     app = require('../examples/internal-ref')
   })
 
   it('200 on GET /hello', () => {
-    return request(app)
-      .get('/hello')
-      .expect(200)
+    return request(app).get('/hello').expect(200)
   })
 })
