@@ -891,7 +891,7 @@ loose-envify@^1.0.0, loose-envify@^1.1.0:
   dependencies:
     js-tokens "^3.0.0"
 
-markdown-it@^8.2.2:
+markdown-it@^8.3.1:
   version "8.3.1"
   resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-8.3.1.tgz#2f4b622948ccdc193d66f3ca2d43125ac4ac7323"
   dependencies:
@@ -1114,7 +1114,7 @@ raw-body@~2.2.0:
     iconv-lite "0.4.15"
     unpipe "1.0.0"
 
-react-dom@^15.3.2:
+react-dom@^15.5.4:
   version "15.5.4"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.5.4.tgz#ba0c28786fd52ed7e4f2135fe0288d462aef93da"
   dependencies:
@@ -1129,17 +1129,17 @@ react-fetch@0.0.9:
   dependencies:
     isomorphic-fetch "^2.1.0"
 
-react-openapi@^2.2.8:
-  version "2.2.9"
-  resolved "https://registry.yarnpkg.com/react-openapi/-/react-openapi-2.2.9.tgz#48844d2e13aa687f2357cb37a5ca60e47a00f4bc"
+react-openapi@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-openapi/-/react-openapi-2.4.0.tgz#d7c3b2e6228fd03486b09ba58e21710d162a16d7"
   dependencies:
     classnames "^2.2.5"
-    markdown-it "^8.2.2"
-    react "^15.3.2"
-    react-dom "^15.3.2"
+    markdown-it "^8.3.1"
+    react "^15.5.4"
+    react-dom "^15.5.4"
     react-fetch "0.0.9"
 
-react@^15.3.2:
+react@^15.5.4:
   version "15.5.4"
   resolved "https://registry.yarnpkg.com/react/-/react-15.5.4.tgz#fa83eb01506ab237cdc1c8c3b1cea8de012bf047"
   dependencies:
