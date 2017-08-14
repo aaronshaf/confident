@@ -1,5 +1,3 @@
-<img alt="Swagger wagon" src="https://d3vv6lp55qjaqc.cloudfront.net/items/0a2x1S1k1l0R0s1Z0n3e/Screen%20Shot%202017-08-09%20at%202.41.10%20PM.png?X-CloudApp-Visitor-Id=2785f610d78799cc3528493040d9b583&v=fdb8909a" width="300" />
-
 Confident treats your API specification (a .json file) as the source of truth for express routes, API documentation, and request/response validation. It's your swagger wagon.
 
 ## Features
